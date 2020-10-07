@@ -4,12 +4,7 @@
 R v. 3.6.3
 
 Load required packages into R.
-```library(grid)```
-```library(VennDiagram)```
-```library(wesanderson)```
-```library(ComplexHeatmap)```
-```library(circlize)```
-```library(cowplot)```
+```library(grid)                                        library(VennDiagram)                                   library(wesanderson)                              library(ComplexHeatmap)                           library(circlize)                                        library(cowplot)```
 
 Read in the csv file generated when calling DMRs using DSS for each methylation context and twin pair.
 
@@ -95,4 +90,4 @@ Create a pdf image with heatmaps and Venn diagrams for each methylation context.
   ```draw_plot(V2, x = 0.65, y = 0.35, width = 0.3, height = 0.3) +```
   ```draw_plot(V3, x = 0.65, y = 0.05, width = 0.3, height = 0.3) +```
   ```draw_plot_label(label = c("a", "b", "c"), size = 15, x = c(0,0,0), y=c(1,0.7,0.4))```
-```dev.off()``` 
+```dev.off()```
