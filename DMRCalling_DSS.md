@@ -53,20 +53,27 @@ Using DSS, call differentially methylated regions (DMRs) comparing twins in twin
 
 Write the identified DMRs in each twin pair to a csv file to use for downstream analysis.
 
-```write.csv(dmrsPair1_0.01, "Smoothing CG_DMRs_Pair1_0.01_DSS.csv")```
-```write.csv(dmrsPair2_0.01, "Smoothing CG_DMRs_Pair2_0.01_DSS.csv")```
+```write.csv(dmrsPair1_0.01, "Smoothing_CG_DMRs_Pair1_0.01_DSS.csv")```
+```write.csv(dmrsPair2_0.01, "Smoothing_CG_DMRs_Pair2_0.01_DSS.csv")```
 
-Create histograms of DMR lengths in basepairs using ggplot2 for each twin pair. Save these files as pdfs to your working directory.
+Create histograms of DMR lengths in basepairs using ggplot2 for DMRs in all methylation contexts for both twin pairs. First create a csv file with one column that is the length of the DMRs from each csv file generated above (i.e. Smoothing_CG_DMRs_Pair1_0.01_DSS.csv). Calculate the mean, median, and mode for the length of all DMRs.
 
-```pdf("Smoothing CG DMRs Stukey Pair 1 p-value < 0.01.pdf")```
-```ggplot(dmrsPair1_0.01, aes(x=length)) + geom_histogram(binwidth = 5)```
+Read in the csv file with one column for length
+
+```DMR_Hist <- read.csv("DMR_Length_DSS_Smoothing.csv")```
+```str(DMR_Hist)```
+```summary(DMR_Hist)```
+```pdf("Histogram DMR Length DSS.pdf")```
+```ggplot(DMR_Hist, aes(x=Length)) + ```
+  ```geom_histogram(binwidth = 10, color = "black", fill = "slateblue") +```
+  ```xlab("DMR Length (bp)")+```
+  ```ylab("Count")```
 ```dev.off()```
 
-```pdf("Smoothing CG DMRs Stukey Pair 2 p-value < 0.01.pdf")```
-```ggplot(dmrsPair2_0.01, aes(x=length)) + geom_histogram(binwidth = 5)```
-```dev.off()```
+Creates a function to estimate the mode for DMR lengths
 
-Calculate the mean DMR length for each twin pair.
-
-```mean(dmrsPair1_0.01$length)```
-```mean(dmrsPair2_0.01$length)```
+```estimate_mode <- function(x) {```
+  ```d <- density(x)```
+  ```d$x[which.max(d$y)]```
+```}```
+```estimate_mode(DMR_Hist$Length)```
