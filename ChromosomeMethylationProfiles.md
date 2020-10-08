@@ -2,6 +2,9 @@
 
 Create plots showing the percent total methylation in all contexts across each of the 8 almond chromosomes for each Stukey twin using R and the CX reports genreated for each methylation context and twin in Bismark.
 
+**Software:**
+R v. 3.6.3
+
 Read in the CX report for the CG context for each Stukey twin.
 
 ```CX_1a<- read.delim("CHGStukey1a_CXreport.txt", header=F, sep="\t", dec=".", colClasses=cc)```
@@ -25,6 +28,7 @@ Calculate the total number of counts for each cytosine (methylated and unmethyla
 ```CX_1b$total<- CX_1b$meth + CX_1b$unmeth```
 ```CX_2a$total<- CX_2a$meth + CX_2a$unmeth```
 ```CX_2b$total<- CX_2b$meth + CX_2b$unmeth```
+
 
 agg_1a<- aggregate(. ~ Scaffold + pos, data=CX_1a, sum)
 agg_1b<- aggregate(. ~ Scaffold + pos, data=CX_1b, sum)
