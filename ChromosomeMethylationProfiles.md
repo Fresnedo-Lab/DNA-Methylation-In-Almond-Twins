@@ -30,10 +30,10 @@ Calculate the total number of counts for each cytosine (methylated and unmethyla
 ```CX_2b$total<- CX_2b$meth + CX_2b$unmeth```
 
 
-agg_1a<- aggregate(. ~ Scaffold + pos, data=CX_1a, sum)
-agg_1b<- aggregate(. ~ Scaffold + pos, data=CX_1b, sum)
-agg_2a<- aggregate(. ~ Scaffold + pos, data=CX_2a, sum)
-agg_1b<- aggregate(. ~ Scaffold + pos, data=CX_2b, sum)
+```agg_1a<- aggregate(. ~ Scaffold + pos, data=CX_1a, sum)```
+```agg_1b<- aggregate(. ~ Scaffold + pos, data=CX_1b, sum)```
+```agg_2a<- aggregate(. ~ Scaffold + pos, data=CX_2a, sum)```
+```agg_1b<- aggregate(. ~ Scaffold + pos, data=CX_2b, sum)```
 
 Create a new variable in the aggregate data frames representing percent methylation (count methylated/total count)
 
