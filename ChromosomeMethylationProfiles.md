@@ -29,6 +29,7 @@ Calculate the total number of counts for each cytosine (methylated and unmethyla
 ```CX_2a$total<- CX_2a$meth + CX_2a$unmeth```
 ```CX_2b$total<- CX_2b$meth + CX_2b$unmeth```
 
+Aggregate technical replicate entries within each individual twin methylation count file by summing counts for the same scaffold plus position combination.
 
 ```agg_1a<- aggregate(. ~ Scaffold + pos, data=CX_1a, sum)```
 ```agg_1b<- aggregate(. ~ Scaffold + pos, data=CX_1b, sum)```
@@ -50,3 +51,12 @@ Write the aggreated data frame to a text file for each twin pair.
 ```write.txt(agg_2b, "CG_2b_agg.txt", sep="\t")```
 
 **Repeat the above for the CHG and CHH methylation contexts**
+
+Following aggregation, prepare the chromosome level percent methylation plots in R.
+
+Read in the aggregate files prepared above.
+
+```CX_1a<- read.delim("CG_1a_agg.txt", header=T, sep="\t")```
+```CX_1b<- read.delim("CG_1b_agg.txt", header=T, sep="\t")```
+```CX_2a<- read.delim("CG_2a_agg.txt", header=T, sep="\t")```
+```CX_2b<- read.delim("CG_2b_agg.txt", header=T, sep="\t")```
