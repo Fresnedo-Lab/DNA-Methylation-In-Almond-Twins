@@ -5,6 +5,9 @@ Create plots showing the percent total methylation in all contexts across each o
 **Software:**
 R v. 3.6.3
 
+Load required packages into R.
+```library(zoo)```
+
 Read in the Bismark CX report for the CG context for each Stukey twin.
 
 ```CX_1a<- read.delim("CHGStukey1a_CXreport.txt", header=F, sep="\t", dec=".", colClasses=cc)```
@@ -60,3 +63,7 @@ Read in the aggregate files prepared above.
 ```CX_1b<- read.delim("CG_1b_agg.txt", header=T, sep="\t")```
 ```CX_2a<- read.delim("CG_2a_agg.txt", header=T, sep="\t")```
 ```CX_2b<- read.delim("CG_2b_agg.txt", header=T, sep="\t")```
+
+Create a list containing the 8 almond scaffold names.
+
+```Scaffolds<- list("Scaffold_1", "Scaffold_2", "Scaffold_3", "Scaffold_4", "Scaffold_5", "Scaffold_6", "Scaffold_7", "Scaffold_8")```
