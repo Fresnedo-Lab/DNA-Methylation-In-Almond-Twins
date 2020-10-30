@@ -5,65 +5,79 @@ Create plots showing the percent total methylation in all contexts across each o
 **Software:**
 R v. 3.6.3
 
-Load required packages into R.
-```library(zoo)```
+# This script aggregates tech reps for use in later analyses
 
-Read in the Bismark CX report for the CG context for each Stukey twin.
+Define column classes
+``cc<- rep('NULL', 7)``
+``cc[1]<- 'factor'``
+``cc[c(2,4,5)]<- 'integer'``
 
-```CX_1a<- read.delim("CHGStukey1a_CXreport.txt", header=F, sep="\t", dec=".", colClasses=cc)```
+Read in CX reports generated from Bismark methylation extractor
+``CX_1a<- read.delim("CGStukey1a_CXreport.txt", header=F, sep="\t", dec=".", colClasses=cc)``
+``CX_1b<- read.delim("CGStukey1b_CXreport.txt", header=F, sep="\t", dec=".", colClasses=cc)``
+``CX_2a<- read.delim("CGStukey2a_CXreport.txt", header=F, sep="\t", dec=".", colClasses=cc)``
+``CX_2b<- read.delim("CGStukey2b_CXreport.txt", header=F, sep="\t", dec=".", colClasses=cc)``
 
-```CX_1b<- read.delim("CHGStukey1b_CXreport.txt", header=F, sep="\t", dec=".", colClasses=cc)```
+Rename columns in data frames
+``colnames(CX_1a)<- c("Scaffold","pos","meth","unmeth")``
+``colnames(CX_2a)<- c("Scaffold","pos","meth","unmeth")``
+``colnames(CX_1b)<- c("Scaffold","pos","meth","unmeth")``
+``colnames(CX_2b)<- c("Scaffold","pos","meth","unmeth")``
 
-```CX_2a<- read.delim("CHGStukey2a_CXreport.txt", header=F, sep="\t", dec=".", colClasses=cc)```
+Aggregate tech reps. This may take awhile.
+``agg_1a<- aggregate(. ~ Scaffold + pos, data=CX_1a, sum)``
+``agg_1b<- aggregate(. ~ Scaffold + pos, data=CX_1b, sum)``
+``agg_2a<- aggregate(. ~ Scaffold + pos, data=CX_2a, sum)``
+``agg_2b<- aggregate(. ~ Scaffold + pos, data=CX_2b, sum)``
 
-```CX_2b<- read.delim("CHGStukey2b_CXreport.txt", header=F, sep="\t", dec=".", colClasses=cc)```
+Write to table.
+``write.table(agg_1a, "agg_1a.txt", sep='\t', row.names=F, quote=F)``
+``write.table(agg_1b, "agg_1b.txt", sep='\t', row.names=F, quote=F)``
+``write.table(agg_2a, "agg_2a.txt", sep='\t', row.names=F, quote=F)``
+``write.table(agg_2b, "agg_2b.txt", sep='\t', row.names=F, quote=F)``
 
-Change the column names in each dataframe.
 
-```colnames(CX_1a)<- c("Scaffold","pos","meth","unmeth")```
-```colnames(CX_2a)<- c("Scaffold","pos","meth","unmeth")```
-```colnames(CX_1b)<- c("Scaffold","pos","meth","unmeth")```
-```colnames(CX_2b)<- c("Scaffold","pos","meth","unmeth")```
+Repeat above for CHG context
 
-Calculate the total number of counts for each cytosine (methylated and unmethylated counts).
+``CX_1a<- read.delim("CHGStukey1a_CXreport.txt", header=F, sep="\t", dec=".", colClasses=cc)``
+``CX_1b<- read.delim("CHGStukey1b_CXreport.txt", header=F, sep="\t", dec=".", colClasses=cc)``
+``CX_2a<- read.delim("CHGStukey2a_CXreport.txt", header=F, sep="\t", dec=".", colClasses=cc)``
+``CX_2b<- read.delim("CHGStukey2b_CXreport.txt", header=F, sep="\t", dec=".", colClasses=cc)``
 
-```CX_1a$total<- CX_1a$meth + CX_1a$unmeth```
-```CX_1b$total<- CX_1b$meth + CX_1b$unmeth```
-```CX_2a$total<- CX_2a$meth + CX_2a$unmeth```
-```CX_2b$total<- CX_2b$meth + CX_2b$unmeth```
+``colnames(CX_1a)<- c("Scaffold","pos","meth","unmeth")``
+``colnames(CX_2a)<- c("Scaffold","pos","meth","unmeth")``
+``colnames(CX_1b)<- c("Scaffold","pos","meth","unmeth")``
+``colnames(CX_2b)<- c("Scaffold","pos","meth","unmeth")``
 
-Aggregate technical replicate entries within each individual twin methylation count file by summing counts for the same scaffold plus position combination.
+``agg_1a<- aggregate(. ~ Scaffold + pos, data=CX_1a, sum)``
+``agg_1b<- aggregate(. ~ Scaffold + pos, data=CX_1b, sum)``
+``agg_2a<- aggregate(. ~ Scaffold + pos, data=CX_2a, sum)``
+``agg_2b<- aggregate(. ~ Scaffold + pos, data=CX_2b, sum)``
 
-```agg_1a<- aggregate(. ~ Scaffold + pos, data=CX_1a, sum)```
-```agg_1b<- aggregate(. ~ Scaffold + pos, data=CX_1b, sum)```
-```agg_2a<- aggregate(. ~ Scaffold + pos, data=CX_2a, sum)```
-```agg_1b<- aggregate(. ~ Scaffold + pos, data=CX_2b, sum)```
+``write.table(agg_1a, "agg_1a.txt", sep='\t', row.names=F, quote=F)``
+``write.table(agg_1b, "agg_1b.txt", sep='\t', row.names=F, quote=F)``
+``write.table(agg_2a, "agg_2a.txt", sep='\t', row.names=F, quote=F)``
+``write.table(agg_2b, "agg_2b.txt", sep='\t', row.names=F, quote=F)``
 
-Create a new variable in the aggregate data frames representing percent methylation (count methylated/total count)
 
-```agg_1a$pm<- agg_1a$meth / agg_1a$total```
-```agg_1b$pm<- agg_1b$meth / agg_1b$total```
-```agg_2a$pm<- agg_2a$meth / agg_2a$total```
-```agg_2b$pm<- agg_2b$meth / agg_2b$total```
+CHH context
 
-Write the aggreated data frame to a text file for each twin pair.
+``CX_1a<- read.delim("CHHStukey1a_CXreport.txt", header=F, sep="\t", dec=".", colClasses=cc)``
+``CX_1b<- read.delim("CHHStukey1b_CXreport.txt", header=F, sep="\t", dec=".", colClasses=cc)``
+``CX_2a<- read.delim("CHHStukey2a_CXreport.txt", header=F, sep="\t", dec=".", colClasses=cc)``
+``CX_2b<- read.delim("CHHStukey2b_CXreport.txt", header=F, sep="\t", dec=".", colClasses=cc)``
 
-```write.txt(agg_1a, "CG_1a_agg.txt", sep="\t")```
-```write.txt(agg_1b, "CG_1b_agg.txt", sep="\t")```
-```write.txt(agg_2a, "CG_2a_agg.txt", sep="\t")```
-```write.txt(agg_2b, "CG_2b_agg.txt", sep="\t")```
+``colnames(CX_1a)<- c("Scaffold","pos","meth","unmeth")``
+``colnames(CX_2a)<- c("Scaffold","pos","meth","unmeth")``
+``colnames(CX_1b)<- c("Scaffold","pos","meth","unmeth")``
+``colnames(CX_2b)<- c("Scaffold","pos","meth","unmeth")``
 
-**Repeat the above for the CHG and CHH methylation contexts**
+``agg_1a<- aggregate(. ~ Scaffold + pos, data=CX_1a, sum)``
+``agg_1b<- aggregate(. ~ Scaffold + pos, data=CX_1b, sum)``
+``agg_2a<- aggregate(. ~ Scaffold + pos, data=CX_2a, sum)``
+``agg_2b<- aggregate(. ~ Scaffold + pos, data=CX_2b, sum)``
 
-Following aggregation, prepare the chromosome level percent methylation plots in R.
-
-Read in the aggregate files prepared above.
-
-```CX_1a<- read.delim("CG_1a_agg.txt", header=T, sep="\t")```
-```CX_1b<- read.delim("CG_1b_agg.txt", header=T, sep="\t")```
-```CX_2a<- read.delim("CG_2a_agg.txt", header=T, sep="\t")```
-```CX_2b<- read.delim("CG_2b_agg.txt", header=T, sep="\t")```
-
-Create a list containing the 8 almond scaffold names.
-
-```Scaffolds<- list("Scaffold_1", "Scaffold_2", "Scaffold_3", "Scaffold_4", "Scaffold_5", "Scaffold_6", "Scaffold_7", "Scaffold_8")```
+``write.table(agg_1a, "agg_1a.txt", sep='\t', row.names=F, quote=F)``
+``write.table(agg_1b, "agg_1b.txt", sep='\t', row.names=F, quote=F)``
+``write.table(agg_2a, "agg_2a.txt", sep='\t', row.names=F, quote=F)``
+``write.table(agg_2b, "agg_2b.txt", sep='\t', row.names=F, quote=F)``
